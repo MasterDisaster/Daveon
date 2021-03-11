@@ -1,0 +1,245 @@
+.Daveon {
+	background-image: url(../images/lupa.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 108px;
+	width: 344px;
+	text-align: center;
+}
+
+.gbqfba {
+height: 29px;
+width: 109px;
+font-family: Arial;
+font-style: normal;
+font-variant: normal;
+font-weight: bold;
+margin: 16px 8px;
+background-color: #f5f5f5;
+background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+border: 1px solid #dcdcdc;
+border-color: rgba(0,0,0,.1);
+color: #444 !important;
+font-size: 11px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+border-radius: 2px;
+cursor: default !important;
+display: inline-block;
+font-weight: bold;
+height: 29px;
+line-height: 29px;
+min-width: 54px;
+padding: 0 8px;
+text-align: center;
+text-decoration: none !important;
+-moz-user-select: none;
+-webkit-user-select: none;
+}
+
+.gbqfba:hover{ 
+background-color:  #f8f8f8;
+background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1)
+border-color: #c6c6c6;
+-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
+box-shadow: 0 1px 1px rgba(0,0,0,.1);
+color: #222 !important;
+}
+
+.superlink{
+color:green;
+}
+
+.superlink:link {
+-webkit-tap-highlight-color: #fcd700;
+}
+
+.superlink:hover {
+font-size: 120%;
+}
+
+#.superlink:hover {
+outline: 0;
+margin: 0;
+padding: 0;
+font-size: 120%;
+vertical-align: baseline;
+background: transparent;
+box-sizing: border-box;
+cursor: auto;
+color: #fff;
+text-shadow: none;
+-webkit-text-fill-color: transparent;
+-webkit-background-clip: text;
+color: white;
+background-image: -webkit-linear-gradient(left,#ea8711,#d96363,#73a6df,#9085fb,#52ca79);
+}
+
+.ftype{
+height: 29px;
+width: 29px;
+font-family: Arial;
+font-style: normal;
+font-variant: normal;
+font-weight: bold;
+background-color: #f5f5f5;
+background-image: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+border: 1px solid #dcdcdc;
+border-color: rgba(0,0,0,.1);
+color: #444 !important;
+font-size: 11px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+border-radius: 2px;
+cursor: default !important;
+display: inline-block;
+font-weight: bold;
+height: 20px;
+line-height: 20px;
+min-width: 29px;
+padding: 0 0px;
+text-align: center;
+text-decoration: none !important;
+-moz-user-select: none;
+}
+
+a.navi_word{
+font-size: small;
+font-family: arial,sans-serif;
+text-decoration: none;
+color: #12c;
+}
+
+a.navi_word:visited {
+color: #609;
+}
+
+a.navi_word:link{
+color: #12c;
+cursor: pointer;
+}
+
+
+.gbqfba:active{
+    background-color:  #f8f8f8;
+	background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1)
+	border-color: #c6c6c6;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px rgba(0,0,0,.1);
+	color: #222 !important;
+}
+
+
+.footer {
+	COLOR: #666; 
+	FONT-SIZE: 11px;
+	BACKGROUND-IMAGE: url(images/background_top.gif);
+	WIDTH: 100%;
+	HEIGHT: 100%;
+	TEXT-ALIGN: center;
+	background-color: #A4BEC9;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: groove;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666; }
+BODY {
+	FONT-FAMILY: arial,sans-serif
+}
+TD {
+	FONT-FAMILY: arial,sans-serif;
+}
+TR {
+	FONT-FAMILY: arial,sans-serif;
+}
+
+A {
+	FONT-FAMILY: arial,sans-serif
+}
+P {
+	FONT-FAMILY: arial,sans-serif
+}
+.h {
+	FONT-FAMILY: arial,sans-serif
+}
+.h {
+	FONT-SIZE: 20px
+}
+.h {
+	COLOR: #3366cc
+}
+.q {
+	COLOR: #00c
+}
+.ts TD {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+.ts {
+	BORDER-COLLAPSE: collapse
+}
+
+.result TH {
+	FONT-SIZE: 12px;
+	BACKGROUND-IMAGE: url(images/background_top.gif);
+	WIDTH: 2024px;
+	TEXT-ALIGN: center;
+	background-color: #F0F8FF;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: groove;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.wynikZapytanie {
+	FONT-WEIGHT: bold; MARGIN: 0px 0px 0px 230px
+}
+.wynikLiczba {
+	FONT-WEIGHT: bold; MARGIN: 0px 0px 0px 200px
+}
+.wynikCzas {
+	FONT-WEIGHT: bold; MARGIN: 0px 0px 0px 210px
+}
+.resultTR {
+	FONT-SIZE: 12px;
+	TEXT-ALIGN: left;
+}
+.resultTD{
+	FONT-SIZE: 12px;
+	TEXT-ALIGN: left;
+}
+.highlt {
+	FONT-WEIGHT: bold; BACKGROUND: yellow
+}
+.resultNoBold {
+	FONT-WEIGHT: normal
+}
+.search {
+	FONT-SIZE: 11px;
+}
+
+.options {
+	FONT-WEIGHT: normal;
+	FONT-SIZE: 12px;	
+}
+
+.resultdate {
+	text-align: left;
+	FONT-WEIGHT: normal;
+	FONT-STYLE: italic;
+	COLOR: gray;
+	FONT-SIZE: 11px;	
+}

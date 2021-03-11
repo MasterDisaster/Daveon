@@ -1,0 +1,10 @@
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Merge: #1
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Merging-> numDocs: 	707
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Merging-> TotalSegment(s):_1(4.3.1):C335 _0(4.3.1):C189 _2(4.3.1):C183
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Merging-> RamSize: 	0
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Merging-> docs/sec: 	141.0
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - ##### Heap utilization statistics [MB] #####
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Used Memory:383
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Free Memory:2586
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Total Memory:2969
+[13/08/2013 17:07:58] INFO [DaveonConcurrentMergeScheduler] - Max Memory:4949

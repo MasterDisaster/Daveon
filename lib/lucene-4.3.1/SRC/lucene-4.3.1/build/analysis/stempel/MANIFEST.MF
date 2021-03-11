@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.4
+Created-By: 1.7.0_25-b17 (Oracle Corporation)
+Extension-Name: org.apache.lucene
+Specification-Title: Lucene Search Engine: analyzers-stempel
+Specification-Version: 4.3.1-SNAPSHOT
+Specification-Vendor: The Apache Software Foundation
+Implementation-Title: org.apache.lucene
+Implementation-Version: 4.3.1-SNAPSHOT Unversioned directory - BKaczma
+ rek - 2013-07-19 17:15:39
+Implementation-Vendor: The Apache Software Foundation
+X-Compile-Source-JDK: 1.6
+X-Compile-Target-JDK: 1.6
+

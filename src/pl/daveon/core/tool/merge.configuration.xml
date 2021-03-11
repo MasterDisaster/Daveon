@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">  
+<properties>
+<entry key="MaxMergeAtOnce">16</entry>
+<entry key="SegmentsPerTier">60.0</entry>
+<entry key="UseCompoundFile">false</entry>
+<entry key="MaxMergedSegmentMB">2000.0</entry>
+<entry key="BufferToFlushSize">500.0</entry>
+<entry key="maxFieldTokenCount">100000</entry>
+<entry key="OPTIMIZE_MaxMergeAtOnce">8</entry>
+<entry key="OPTIMIZE_SegmentsPerTier">30.0</entry>
+<entry key="OPTIMIZE_UseCompoundFile">false</entry>
+<entry key="OPTIMIZE_MaxMergedSegmentMB">800.0</entry>
+<entry key="_Crawler_MinimumDocsToEngage">9</entry>
+</properties>
