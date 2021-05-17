@@ -10,8 +10,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.pl.PolishAnalyzer;
 import org.apache.lucene.document.Document;
@@ -55,13 +53,16 @@ public class DaveonSearcher
 
 	public final static int		OPT_LASTMODIFIEDREVERT	= 2;
 
-	public final static String	partsSeparator			= "#dupa##dupa#";
+	/**
+	 *
+	 */
+	public static final String PARTS_SEPARATOR 			= "#dupa##dupa#";
 
-	public final static String	beginTag				= "<span class=\"highlt\">";
+	public static final String BEGINTAG				= "<span class=\"highlt\">";
 
-	public final static String	endTag					= "</span>";
+	public static final String ENDTAG 					= "</span>";
 
-	private final static int 	HITS_FRAGMENTS_LENGTH	=	200*2;
+	private static final int 	HITS_FRAGMENTS_LENGTH	=	200*2;
 
 	private 			String 	summary					= "";
 
@@ -75,11 +76,11 @@ public class DaveonSearcher
 
 			if (results == null)
 			{
-				System.out.println("Podczas wyszukiwania wyst¹pi³ b³¹d.");
+				System.out.println("Podczas wyszukiwania wystapil blad.");
 			} else
 				if (results.length == 0)
 				{
-					System.out.println("Nie znaleziono wyników pasuj¹cych do kryterium");
+					System.out.println("Nie znaleziono wynikow pasujacych do kryterium");
 				} else
 				{
 					for (int i = 2; i < results.length; i++)
@@ -114,22 +115,20 @@ public class DaveonSearcher
 	public enum KEYE
 	{
 		CONTEXT(DaveonIndexer.CONTEXT_KEY), FILETYPE(DaveonIndexer.FT_KEY), LINK(DaveonIndexer.LINK_KEY), INURL(DaveonIndexer.LINK_KEY), URL(DaveonIndexer.LINK_KEY);
-		
 		String _fld = "CONTEXT";
 		KEYE(String field)
 		{
 			this._fld = field;
 		}
-		
 		public String[] processKeyQueries(String srequest)
 		{
 			Pattern pt = null;
-			String uprsrequest = srequest.toUpperCase(Locale.getDefault());
-			
-			if(srequest==null || srequest.isEmpty())
-				return null;
+			String uprsrequest = "";
+			if(String.isNullOrEmpty(srequest))
+				return new String[0];
 			else
 			{
+				uprsrequest = srequest.toUpperCase(Locale.getDefault());
 				if(uprsrequest.contains(KEYE.FILETYPE.toString()))
 				{
 					pt = Pattern.compile("(?i)(.{0,1}"+KEYE.FILETYPE+":[a-z,]+){1}");
@@ -137,8 +136,8 @@ public class DaveonSearcher
 					if(mt.find())
 						System.out.println(mt.group());
 				}
-					
-				/*nalezy sprawdzic czy w tekscie jest request szukania po wybranych polach (LINK|INURL|URL, CONTEXT, FILETYPE)*/
+				/*nalezy sprawdzic czy w tekscie jest request szukania po wybranych polach
+				 (LINK|INURL|URL,CONTEXT,FILETYPE)*/
 				return null;
 			}
 		}
@@ -156,13 +155,13 @@ public class DaveonSearcher
 	}
 
 	/**
-	 * Metoda odpowiedzialna za przeszukiwanie i zwracaj¹ca wyniki
+	 * Metoda odpowiedzialna za przeszukiwanie i zwracajï¿½ca wyniki
 	 *
-	 * @return null - jeœli wyst¹pi³ wyj¹tek/b³¹d, String[0] jeœli nie ma ¿adnych trafieñ, String[] wyników jeœli
-	 *         s¹ jakieœ trafienia. Ka¿dy ze zwracanych String'ów ma format:
+	 * @return null - jeï¿½li wystï¿½piï¿½ wyjï¿½tek/bï¿½ï¿½d, String[0] jeï¿½li nie ma ï¿½adnych trafieï¿½, String[] wynikï¿½w jeï¿½li
+	 *         sï¿½ jakieï¿½ trafienia. Kaï¿½dy ze zwracanych String'ï¿½w ma format:
 	 *         linkDoDokumentu//partsSeparator////begingTag//trafionyTekst//endTag//, gdzie //separator// gdzie
-	 *         //partsSeparator//, //beginTag// oraz //endTag// to zmienne, okreœlaj¹ce w jaki sposób ma byæ
-	 *         zwrócony wynik.
+	 *         //partsSeparator//, //beginTag// oraz //endTag// to zmienne, okreï¿½lajï¿½ce w jaki sposï¿½b ma byï¿½
+	 *         zwrï¿½cony wynik.
 	 * @author dmaciejewski
 	 */
 
@@ -172,11 +171,10 @@ public class DaveonSearcher
 	{
 		Date startDate = new Date();
 		String[] out;
-		PolishAnalyzer analyzer = new PolishAnalyzer(Version.LUCENE_43);
-
-
+		PolishAnalyzer analyzer = null;
 		try
 		{
+			analyzer = new PolishAnalyzer(Version.LUCENE_43);
 
 			String entireQuery = _googleQuery.trim();
 			BooleanQuery.setMaxClauseCount(500000);
@@ -202,7 +200,6 @@ public class DaveonSearcher
 				/*informacje dodatkowe: */
 				long numberOfDocs = reader.numDocs();
 				this.summary = "";
-	
 				SegmentInfos sis = new SegmentInfos();
 				Map<String, String> additionalD = null;
 				try
@@ -214,7 +211,6 @@ public class DaveonSearcher
 				{
 					additionalD = null;
 				}
-				
 				sis = null;
 				if(additionalD!=null && additionalD.size()>0)
 				{
@@ -228,22 +224,18 @@ public class DaveonSearcher
 					}
 				}
 				this.summary+="	Dokumentow w indexie: <b>"+String.format("%,8d%n", numberOfDocs)+"</b>";
-	//			System.out.println(getSummary());
+				System.out.println(getSummary());
 				/**/
 				searcher = new IndexSearcher(reader);
 				try{
-	
 					queryParser = new QueryParser(Version.LUCENE_43, DaveonIndexer.CONTEXT_KEY, analyzer);
 					query = queryParser.parse(entireQuery);
-	
 				}
 				catch (ParseException ex)
 				{
-//					System.out.println("Podano niewlasciwa skladnie zapytania : " + ex.getMessage());
 					System.out.println("Podano niewlasciwa skladnie zapytania.");
 					return new String[] { "" + 0, "" + 0 };
 				}
-	
 				switch (searchOption)
 				{
 					case DaveonSearcher.OPT_RELEVANCE:
@@ -258,16 +250,11 @@ public class DaveonSearcher
 					default:
 						hits = searcher.search(query, 1000).scoreDocs;
 				}
-
 			}
 			finally{
 				if(reader!=null)
 					reader.close();
-//				System.out.println("Closing searcher. Will it invoke close to READER?");
-//				searcher.
-//				searcher.close();
 			}
-
 			try
 			{
 			reader =  DirectoryReader.open(FSDirectory.open(_indexDir));
@@ -279,20 +266,16 @@ public class DaveonSearcher
 //					System.out.println("Second reader is being closed");						
 //				}});
 			/**/
-
 			DateFormat format = new SimpleDateFormat(DaveonSearcher.DATE_PRESENATION);
 			format.setTimeZone(TimeZone.getTimeZone(DaveonSearcher.DATE_TIMEZONE));
-
 			searcher = new IndexSearcher(reader);
 			int foundResultsNumber = (hits != null) ? hits.length : 0;
-
-
 			out = new String[resultsPerPage + 1 + 2];
 			
 			//index:0 - okresla ilosc wynikow - ilosc trafien zapytania
-			out[0] = "" + foundResultsNumber;
+			out[0] = "" + (foundResultsNumber);
 
-			//okresla index od ktorego bêd¹ zbierane informacje o wynikach - czyli elementy SearchElement
+			//okresla index od ktorego bï¿½dï¿½ zbierane informacje o wynikach - czyli elementy SearchElement
 			final int dataOffset = 2;
 
 				if (foundResultsNumber > 0)
@@ -313,34 +296,26 @@ public class DaveonSearcher
 							 * ilosc elementow do wyswietlenia na stronie */
 							break;
 						}
-
 						ScoreDoc hit = hits[i];
 //						ScoreDoc hit = hits[recordsCounter + i + (pager*resultsPerPage)];
-//						System.out.println("My pager is: "+pager);
-						
+//						System.out.println("My pager is: "+pager);						
 //						if (recordsPager >= pager && recordsCounter < (recordsPager + resultsPerPage))
 //						{
-
 						if (recordsPager >= ((pager-1)*resultsPerPage) && recordsCounter <= resultsPerPage)
 						{
 //							System.out.println("Adding scoreDoc at hit_ID: "+i);
-
 							int doc_id = hit.doc;
 							Document doc = searcher.doc(doc_id);
-
 							String ftype = doc.get(DaveonIndexer.FT_KEY);
 							String fname = doc.get(DaveonIndexer.DOC_NAME);
 							String ftitle = fname;//doc.get(LucyIndexer.DOC_TITLE);
-
 							String link = prefixUrl+doc.get(DaveonIndexer.LINK_KEY);
 							link = URLDecoder.decode(link,DaveonSearcher.LOC_ENCODING);
-
 //							long modified = 0;
 //							try
 //							{
 //								String modval = doc.get(DaveonIndexer.MOD_KEY);
 //								modified = Long.valueOf(modval);
-//
 //							}
 //							catch(NumberFormatException nfe)
 //							{
@@ -349,15 +324,13 @@ public class DaveonSearcher
 //							}
 //							String formatted = format.format(new Date(modified));
 							String frag = highlighter.getBestFragment(fieldQuery, searcher.getIndexReader(), doc_id, DaveonIndexer.CONTEXT_KEY, DaveonSearcher.HITS_FRAGMENTS_LENGTH);
-
-							out[recordsCounter + dataOffset] = link + partsSeparator
+							out[recordsCounter + dataOffset] = link + PARTS_SEPARATOR
 //									+ ((frag != null) ? frag : (beginTag + positive.toString() + endTag))
-									+ ((frag != null) ? frag : (beginTag + entireQuery + endTag))
+									+ ((frag != null) ? frag : (BEGINTAG + entireQuery + ENDTAG))
 //									+ partsSeparator + formatted
-									+ partsSeparator + ftype
-									+ partsSeparator + fname
-									+ partsSeparator + ftitle;
-
+									+ PARTS_SEPARATOR + ftype
+									+ PARTS_SEPARATOR + fname
+									+ PARTS_SEPARATOR + ftitle;
 							recordsCounter++;
 						}
 						recordsPager++;
@@ -368,23 +341,14 @@ public class DaveonSearcher
 			{
 				if(reader !=null )
 					reader.close();
-//				System.out.println("Closing searcher#2");
-//				searcher.close();
 			}
-
 			//index:1 - okresla czas poswiecony na zgromadzenie wynikow zapytania
 			out[1] = new Date().getTime() - startDate.getTime() + "";
 			return out;
 		}
-
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-			return new String[] { "" + 0, "" + 0 };
-		}
-		catch (Error er)
-		{
-			er.printStackTrace();
 			return new String[] { "" + 0, "" + 0 };
 		}
 	}

@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "vscjava.vscode-java-pack",
-        "visualstudioexptteam.vscodeintellicode"
+        "visualstudioexptteam.vscodeintellicode",
+        "redhat.java"
     ]
 }

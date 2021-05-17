@@ -89,13 +89,13 @@ public class DocIndexingThred extends Thread implements IStearingThred {
 //	public static final String	_urlPrefix			= new File("").toURI().getScheme()+":/";
 //	public static final int		_urlPrefixLn		= _urlPrefix.length();
 	private ArrayList<DaveonDocumentState> _allds		= null;
-	private int			_unwantedPathElementSize	= 0;
-	private static final long	_currTime					= new Date().getTime();
+	private int					FI_UNWANTED_PATH_ELEMENT_SIZE	= 0;
+	private static final long	FL_CURRTIME					= new Date().getTime();
 	private static final DateFormat _df 					= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 	public static long strToDateToLong(String dateS)
 	{
-		long res = _currTime;
+		long res = FL_CURRTIME;
 		try {
 			String s = dateS.replaceAll("([a-zA-Z])", " ").trim();
 			res = _df.parse(s).getTime();
@@ -262,7 +262,7 @@ public class DocIndexingThred extends Thread implements IStearingThred {
 		if(ili.getWorkMode()==WORKMODE.CROWLING_MODE)
 			this._allds = ili.getPreIndexedFilesMeta();
 
-		this._unwantedPathElementSize = getILI().getRootLocationURLForm().length();
+		this.FI_UNWANTED_PATH_ELEMENT_SIZE = getILI().getRootLocationURLForm().length();
 
 		this.detector= setupDefaultDectector();
 		this.parser = new AutoDetectParser();
@@ -396,7 +396,7 @@ public class DocIndexingThred extends Thread implements IStearingThred {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		String reposPath = localPath.subSequence(this._unwantedPathElementSize-1, localPath.length()).toString();
+		String reposPath = localPath.subSequence(this.FI_UNWANTED_PATH_ELEMENT_SIZE-1, localPath.length()).toString();
 		reposPath = reposPath.replaceAll("\\+", "%2b");
 
 		return new String[]{reposPath, getMD5(reposPath)};
@@ -446,12 +446,9 @@ public class DocIndexingThred extends Thread implements IStearingThred {
 		TIF("TIF"),TIFF("TIFF"), TXT("TXT"), SQL("SQL"), LOG("LOG"), BAT("BAT"),
 		DBF("DBF"),LIB("LIB");
 
-//		long _type = 2;
 		String _name = "";
 
 		TYPEDFILE(String otype){
-//			long value = 0;
-//			byte[] bts = otype.getBytes();
 //			for(int ord =0; ord<otype.length(); ord++)
 //			{
 //				value += (long)(bts[ord] << ord*8);

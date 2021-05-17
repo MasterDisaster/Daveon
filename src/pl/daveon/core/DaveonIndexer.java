@@ -24,15 +24,6 @@ import java.util.TimeZone;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
-import pl.daveon.core.tool.DaveonConcurrentMergeScheduler;
-import pl.daveon.slave.CyclesCrawler;
-import pl.daveon.slave.DaveonDocumentState;
-import pl.daveon.slave.DocIndexingThred;
-import pl.daveon.slave.IDaveonIndexation;
-import pl.daveon.slave.IStearingThred;
-import pl.daveon.slave.STATE;
-import pl.daveon.slave.WORKMODE;
-
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.miscellaneous.LimitTokenCountAnalyzer;
 import org.apache.lucene.analysis.pl.PolishAnalyzer;
@@ -42,15 +33,24 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TieredMergePolicy;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
+
+import pl.daveon.core.tool.DaveonConcurrentMergeScheduler;
+import pl.daveon.slave.CyclesCrawler;
+import pl.daveon.slave.DaveonDocumentState;
+import pl.daveon.slave.DocIndexingThred;
+import pl.daveon.slave.IDaveonIndexation;
+import pl.daveon.slave.IStearingThred;
+import pl.daveon.slave.STATE;
+import pl.daveon.slave.WORKMODE;
 
 
 /**
@@ -98,7 +98,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 
 	private String		_rootLocation;
 	private String		_rootLocationURLForm;
-//	private String		_linkTo;
 	/**
 	 * can be overrided - pass new value to calss constructor
 	 */
@@ -110,10 +109,9 @@ public class DaveonIndexer implements IDaveonIndexation{
 	/**
 	 * zmienna trzyma wskazanie na fs do plikow dla klasy @CyclesCrowler
 	 */
-	private String 		_crowlerData			= "";
-	private ArrayList<DaveonDocumentState> 		_preIndexedFilesMeta = null;
-	private HashMap<String, String> commitUserData = null;
-
+	private String 								_crowlerData			= "";
+	private ArrayList<DaveonDocumentState> 		_preIndexedFilesMeta 	= null;
+	private HashMap<String, String> 			commitUserData 			= null;
 
 
 	/**
@@ -127,12 +125,11 @@ public class DaveonIndexer implements IDaveonIndexation{
 	{
 		this.setRootLocation(rootLocation);
 		this.setIndexLocation(indexLocation);
-		
 		 Properties properties = new Properties();
 	     InputStream is = null;
 	     try
 	        {
-		        is = DaveonConcurrentMergeScheduler.class.getResourceAsStream("merge.configuration.xml");
+		        is = DaveonConcurrentMergeScheduler.class.getResourceAsStream("name");
 		        try {
 					properties.loadFromXML(is);
 				} 
@@ -218,7 +215,7 @@ public class DaveonIndexer implements IDaveonIndexation{
 			TieredMergePolicy tmp = new TieredMergePolicy();
 	        try
 	        {
-		        is = DaveonConcurrentMergeScheduler.class.getResourceAsStream("merge.configuration.xml");
+		        is = DaveonConcurrentMergeScheduler.class.getResourceAsStream(name2);
 		        try {
 					properties.loadFromXML(is);
 				} catch (InvalidPropertiesFormatException e1) {
@@ -374,13 +371,9 @@ public class DaveonIndexer implements IDaveonIndexation{
 	 * @throws Exception
 	 */
 	private void setupCacheLocation() throws IOException{
-
 		File mmapTempDir = new File(getIndexCacheDirName());
-//		if (mmapTempDir.isDirectory())
-//				mmapTempDir.delete();
 		if(!mmapTempDir.exists())
 			mmapTempDir.mkdir();
-
 		if(!mmapTempDir.exists()) throw new IOException("Unable to create index storing location:"+getIndexCacheDirName());
 	}
 
@@ -389,10 +382,8 @@ public class DaveonIndexer implements IDaveonIndexation{
 	{
 		File rootDir = new File(getRootLocation());
 		StringBuilder sb = new StringBuilder();
-
 		CyclesCrawler cc = null;
 		List<String> result = null;
-
 		if(getWorkMode()==WORKMODE.FULLINDEXING_MODE)
 		{
 			generateFilesList(rootDir, sb);
@@ -422,21 +413,18 @@ public class DaveonIndexer implements IDaveonIndexation{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 				putCommitData("REVISION", String.valueOf(cc.getRevision()));
-
 				/*tutaj stworzenie listy informacji o plikach:
 				 * --czy plik istnieje w indexie - jesli tak to wtedy jego update/dodane, w innym przypadku nic
 				 * */
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			if(cc.size()>0)
+			if((cc != null) && (!cc.isEmpty()))
 				result = cc;
 			else
 				result = null;
 		}
-
 		return result;
 	}
 
@@ -450,7 +438,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 		}
 		String reposPath = localPath.subSequence(unwantedLength-1, localPath.length()).toString();
 		reposPath = reposPath.replaceAll("\\+", "%2b");
-
 		return new String[]{reposPath, DocIndexingThred.getMD5(reposPath)};
 	}
 
@@ -467,7 +454,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 				lds.setMD5(st[1]);
 				hslds.add(lds);
 			}
-
 			return getPreIndexedDocumentsState(hslds);
 		}
 		else
@@ -512,8 +498,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 
 
 	private void generateFilesList(File dir,StringBuilder filesList) {
-
-
 		if (dir.isDirectory() && !dir.isHidden())
 		{
 			File[] children = dir.listFiles();
@@ -523,8 +507,11 @@ public class DaveonIndexer implements IDaveonIndexation{
 			}
 		}
 		else
-			if(!dir.isHidden())
+		{
+			if(!dir.isHidden()){
 				filesList.append(dir.getPath()+"\r\n");
+			}
+		}
 	}
 
 	/**
@@ -594,17 +581,14 @@ public class DaveonIndexer implements IDaveonIndexation{
 					logger.info("Wersja LucyIndexer: 20.07.2013 at core "+Version.LUCENE_43);
 					logger.info("Tryp pracy indexera: "+getWorkMode());
 					logger.info("Rozpoczecie indexowania galezi: " + getRootLocation());
-
 					List<String> fList = getDocumentsList();
 					String communicateAction = "No data attached (Documents list is empty).";
-
 					if (fList!=null && this.getWorkMode()==WORKMODE.CROWLING_MODE && fList.size() < getMinimumCrawlerDocsToEngage())
 					{
 						communicateAction = "Minimum documents treshold for "+getWorkMode()+" is not met (min is:"+getMinimumCrawlerDocsToEngage()+" current is:"+fList.size()+")";
 						fList.clear();
 						fList = null;
 					}
-					
 					if (fList== null)
 					{
 						logger.info(communicateAction);
@@ -612,27 +596,25 @@ public class DaveonIndexer implements IDaveonIndexation{
 					else
 					{
 						logger.info("File List generated. Found "+fList.size()+" potential files for indexing.");
-
 						DocIndexingThred[] dits = null;
 						int queueDepth = (fList.size() < getProcessingCoresCount()) ? fList.size(): getProcessingCoresCount();
 						ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<String>(queueDepth);
-						
 						try
 						{
 							dits = initializeIndexingThreads(queue, queueDepth);
 							startAllDocIndexingThred(dits);
 						}
 						catch (InterruptedException ie)
-						{}
+						{
+
+						}
 						catch (NullPointerException np)
-						{}
+						{
 
+						}
 						logger.info("Starting queue fill. Blocking at "+getProcessingCoresCount()+" items depth.");
-
 						this.ramWriter = fastIndexWriterOpen();
-
 						//okresla godzine startu pracy indexerow
-
 						Date startDate = new Date();
 						/*
 						 * wstawiane kolejne wartosci do kolejki @queue sa blokowane
@@ -647,9 +629,7 @@ public class DaveonIndexer implements IDaveonIndexation{
 						logger.info("List iteration complete. Stopping Threads..");
 						for(DocIndexingThred dit : dits)
 							dit.stopFreeRun();
-
 						//
-
 						/*
 						 * Pierwsze zabezpieczenie przed wymknieciem sie w�tk�w.
 						 * ZALETA: nie zabija procka na 100% - i koncowe dokuemmenty indeksuja
@@ -660,7 +640,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 					         f.join(20*1000);
 					    }
 						logger.info("Threads REJOIN complete.");
-
 						/*
 						 * WADA: Mocno obcia�a procesor
 						 *
@@ -679,7 +658,6 @@ public class DaveonIndexer implements IDaveonIndexation{
 //								logger.trace(threadsfinished+" threads has finished. Awaiting "+(getProcessingCoresCount()-threadsfinished)+" other threads...");
 //							}
 //						}
-
 						closeRamWriter(startDate);
 					}
 			}
@@ -689,7 +667,9 @@ public class DaveonIndexer implements IDaveonIndexation{
 			}
 		}
 		else
+		{
 			logger.info("Lock obtained");
+		}
 	}
 
 
