@@ -32,17 +32,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [  ]
+        language: [ 'java', 'bash' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+      
+    - name: Setup Java JDK
+    #  run: |
+    #    download_url="https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u345-b01/OpenJDK8U-debugimage_x64_linux_hotspot_8u345b01.tar.gz"
+    #    wget -O $RUNNER_TEMP/java_package.tar.gz $download_url
+    - uses: actions/setup-java@v3.4.1
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+        architecture: 'x64'
+        check-latest: true
+    - run: echo "JAVA_8=$JAVA_HOME" >> $GITHUB_ENV
 
+#        distribution: 'jdkfile'
+#        jdkFile: ${{ runner.temp }}/java_package.tar.gz
+#        java-version: '8u345-b01'
+#        architecture: 'x64'
+    
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -51,12 +68,11 @@ jobs:
         
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
-
-        
+    
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    # - name: Autobuild
+    #  uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
