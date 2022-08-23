@@ -7,7 +7,8 @@
     "git.enableSmartCommit": true,
     "git.scanRepositories": [
         "/home/blazej/VS-WRKSPC/congenial-system",
-        "/home/blazej/wrkspc/GIT-CallHybrid"
+        "/home/blazej/wrkspc/GIT-CallHybrid",
+        "/home/blazej/bin"
     ],
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.debug.logLevel": "verbose",
@@ -24,5 +25,12 @@
     "java.referencesCodeLens.enabled": true,
     "java.saveActions.organizeImports": true,
     "java.showBuildStatusOnStart.enabled": true,
-    "java.server.launchMode": "Standard"
+    "java.server.launchMode": "Standard",
+    "search.useGlobalIgnoreFiles": true,
+    "git.countBadge": "off",
+    "git.rebaseWhenSync": true,
+    "git.requireGitUserConfig": false,
+    "git.showCommitInput": false,
+    "git.supportCancellation": true,
+    "githubIssues.createInsertFormat": "url"
 }
